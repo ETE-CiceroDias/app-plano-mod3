@@ -22,8 +22,8 @@ const CONFIG = {
 // DISCIPLINAS
 // ============================================================
 const disciplinas = [
-  { id: "dim", codigo: "DE_242", nome: "Design de Interfaces Mobile",      ch: "40h",  cor: "teal",   icon: "📱", disponivel: true,  imagem: dimApp, descricao: "UI Mobile, Android vs. iOS, Figma Avançado e Componentização. Projeto: Protótipo de Alta Fidelidade." },
-  { id: "pw",  codigo: "DE_236", nome: "Programação em Novas Tecnologias", ch: "160h", cor: "indigo", icon: "💻", disponivel: false, imagem: pwApp,  descricao: "HTML5, CSS3, JavaScript e React. Desenvolvimento de projetos web do zero ao deploy." },
+  { id: "dim", codigo: "DE_242", nome: "Design de Interfaces Mobile",      ch: "40h",  cor: "teal",   icon: "📱", disponivel: true,  imagem: dimApp, descricao: "UI Mobile, Android vs. iOS, Figma Avançado e Componentização. Projeto: Protótipo de Alta Fidelidade.", ClassroomLink: "https://classroom.google.com/c/Nzk0MTMxNTM4NjQy?cjc=gzhkbuhg" },
+  { id: "pw",  codigo: "DE_236", nome: "Programação em Novas Tecnologias", ch: "160h", cor: "indigo", icon: "💻", disponivel: false, imagem: pwApp,  descricao: "HTML5, CSS3, JavaScript e React. Desenvolvimento de projetos web do zero ao deploy.", ClassroomLink: "https://classroom.google.com/c/Nzk0MTMxNjk0MDI4?cjc=x2dl66xl" },
 ];
 
 const corMap = {
@@ -265,6 +265,13 @@ function PlanoEmBreve({ disc }) {
       <div className={`w-16 h-16 rounded-2xl ${c.bg} flex items-center justify-center text-3xl mb-4 shadow-lg`}>{disc.icon}</div>
       <h2 className="text-xl font-bold text-gray-800 mb-2">{disc.nome}</h2>
       <p className="text-gray-500 text-sm mb-4 max-w-xs leading-relaxed">{disc.descricao}</p>
+      {disc.ClassroomLink && (
+        <a href={disc.ClassroomLink} target="_blank" rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+          className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-3 ${c.badge} border ${c.border} hover:opacity-80 transition-all`}>
+          🔗 Acessar Classroom
+        </a>
+      )}
       <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${c.badge} border ${c.border}`}>
         🕐 Plano em construção
       </div>
@@ -363,7 +370,16 @@ function DesktopLayout({ disciplinaAtiva, setDisciplinaAtiva }) {
                     <div className="px-5 py-4">
                       <div className="font-bold text-gray-900 text-base mb-1">{d.nome}</div>
                       <div className="text-xs text-gray-400 mb-2">{d.codigo} · {d.ch}</div>
-                      <p className="text-xs text-gray-500 leading-relaxed">{d.descricao}</p>
+                      <p className="text-xs text-gray-500 leading-relaxed mb-2">{d.descricao}</p>
+                      {/* ✅ LINK CLASSROOM — painel home desktop */}
+                      {d.ClassroomLink && (
+                        <div onClick={e => e.stopPropagation()}>
+                          <a href={d.ClassroomLink} target="_blank" rel="noopener noreferrer"
+                            className="text-xs text-blue-600 hover:underline hover:text-blue-800 font-medium">
+                            🔗 Acessar Classroom
+                          </a>
+                        </div>
+                      )}
                     </div>
                     <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
                       <span className="text-xs text-gray-400">{CONFIG.modulo}</span>
@@ -390,15 +406,23 @@ function DesktopLayout({ disciplinaAtiva, setDisciplinaAtiva }) {
           </div>
         ) : (
           <div>
+            {/* ✅ BANNER DESKTOP com link Classroom */}
             <div className={`relative ${c.bg} text-white`}>
               {disc.imagem && <img src={disc.imagem} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20" />}
               <div className="relative max-w-4xl mx-auto w-full px-8 py-8">
                 <div className="text-xs opacity-60 font-medium uppercase tracking-widest mb-3">{disc.codigo} · {CONFIG.modulo}</div>
                 <h2 className="text-3xl font-bold mb-2">{disc.nome}</h2>
                 <p className="text-white opacity-70 text-sm max-w-xl leading-relaxed">{disc.descricao}</p>
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex items-center gap-3 mt-4 flex-wrap">
                   <span className="text-xs bg-white bg-opacity-15 px-3 py-1 rounded-full">{disc.ch}</span>
                   <span className="text-xs bg-white bg-opacity-15 px-3 py-1 rounded-full">{CONFIG.periodo}</span>
+                  {/* ✅ LINK CLASSROOM — banner desktop */}
+                  {disc.ClassroomLink && (
+                    <a href={disc.ClassroomLink} target="_blank" rel="noopener noreferrer"
+                      className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full transition-all font-semibold">
+                      🔗 Acessar Classroom
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
@@ -429,12 +453,21 @@ function MobileLayout({ disciplinaAtiva, setDisciplinaAtiva }) {
               className="flex items-center gap-1.5 text-sm text-white opacity-70 hover:opacity-100 mb-4 touch-manipulation">
               ← Voltar ao painel
             </button>
-            <div className="flex items-center gap-3">
+            <div className="flex items-start gap-3">
               <div className="w-14 h-14 rounded-2xl bg-white bg-opacity-20 flex items-center justify-center text-3xl flex-shrink-0">{disc.icon}</div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="text-xs opacity-70 font-medium uppercase tracking-wide">{disc.codigo} · {CONFIG.modulo}</div>
                 <div className="text-xl font-bold leading-tight">{disc.nome}</div>
                 <div className="text-xs opacity-75 mt-0.5">{disc.ch} · {CONFIG.periodo}</div>
+                {/* ✅ LINK CLASSROOM — header mobile */}
+                {disc.ClassroomLink && (
+                  <div className="mt-2" onClick={e => e.stopPropagation()}>
+                    <a href={disc.ClassroomLink} target="_blank" rel="noopener noreferrer"
+                      className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-full font-semibold transition-all inline-block">
+                      🔗 Acessar Classroom
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -502,6 +535,15 @@ function MobileLayout({ disciplinaAtiva, setDisciplinaAtiva }) {
                     </div>
                     <div className="text-xs text-gray-400 mt-0.5">{d.codigo} · {d.ch}</div>
                     <div className="text-xs text-gray-500 mt-1 leading-relaxed">{d.descricao}</div>
+                    {/* ✅ LINK CLASSROOM — lista mobile */}
+                    {d.ClassroomLink && (
+                      <div className="mt-2" onClick={e => e.stopPropagation()}>
+                        <a href={d.ClassroomLink} target="_blank" rel="noopener noreferrer"
+                          className="text-xs text-blue-600 hover:underline font-medium">
+                          🔗 Acessar Classroom
+                        </a>
+                      </div>
+                    )}
                   </div>
                   <span className="text-gray-300 text-xl flex-shrink-0">›</span>
                 </div>
